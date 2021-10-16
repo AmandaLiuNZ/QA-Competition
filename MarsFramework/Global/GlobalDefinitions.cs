@@ -22,10 +22,11 @@ namespace MarsFramework.Global
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(time);
 
         }
-        public static IWebElement WaitForElement(IWebDriver driver, By by, int timeOutinSeconds)
+        public static IWebElement WaitForElement(IWebDriver driver, By by, int timeOutinSeconds=10)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeOutinSeconds));
             return (wait.Until(ExpectedConditions.ElementIsVisible(by)));
+
         }
         #endregion
 

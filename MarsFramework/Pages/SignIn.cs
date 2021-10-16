@@ -1,5 +1,7 @@
-﻿using OpenQA.Selenium;
+﻿using MarsFramework.Global;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
+
 
 namespace MarsFramework.Pages
 {
@@ -9,6 +11,9 @@ namespace MarsFramework.Pages
         {
             PageFactory.InitElements(Global.GlobalDefinitions.driver, this);
         }
+
+        By _SignIn = By.LinkText("Sign In");
+        By _email = By.Name("email");
 
         #region  Initialize Web Elements 
         //Finding the Sign Link
@@ -31,7 +36,18 @@ namespace MarsFramework.Pages
 
         internal void LoginSteps()
         {
+            //Populate the excel data
+            GlobalDefinitions.ExcelLib.PopulateInCollection(Base.ExcelPath, "SignIn");
 
+            GlobalDefinitions.driver.Navigate().GoToUrl(GlobalDefinitions.ExcelLib.ReadData(2, "Url"));
+
+            GlobalDefinitions.WaitForElement(GlobalDefinitions.driver, _SignIn, 10);
+            SignIntab.Click();
+
+            GlobalDefinitions.WaitForElement(GlobalDefinitions.driver, _email, 10);
+            Email.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Username"));
+            Password.SendKeys(GlobalDefinitions.ExcelLib.ReadData(2, "Password"));
+            LoginBtn.Click();
         }
     }
 }
